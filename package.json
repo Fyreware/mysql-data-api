@@ -1,13 +1,13 @@
 {
-  "name": "mysql-data-api-wrapper",
-  "version": "1.0.0",
+  "name": "mysql-data-api",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Fyresite",
   "license": "ISC",
   "devDependencies": {
     "aws-sdk": "^2.540.0"
