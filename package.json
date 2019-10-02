@@ -1,5 +1,5 @@
 {
-  "name": "MysqlDataApiWrapper",
+  "name": "mysql-data-api-wrapper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,5 +8,13 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.540.0"
+  },
+  "dependencies": {
+    "data-api-client": "^1.0.0-beta",
+    "events": "^3.0.0",
+    "sqlstring": "^2.3.1"
+  }
 }
