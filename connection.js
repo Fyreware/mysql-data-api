@@ -1,4 +1,5 @@
-const DataApi = require('./DataApiClient')
+const DataApi = require('data-api-client')
+const { EventEmitter } = require('events');
 
 let client;
 class Connection extends EventEmitter {
@@ -10,34 +11,45 @@ class Connection extends EventEmitter {
 
         if(!client) {
             client = DataApi({
-                secretArn: host,
-                resourceArn: password,
+                resourceArn: host,
+                secretArn: password,
                 database: database,
             })
         }
-        this.emit('connect');
-
-
-        this._handshakePacket = null;
+        
+        /** 
+         * These values are necessary for Connection-Manager for Sequelize 
+         *  We do nothing with these values, but without them Sequelize will error out
+         * */
         this._fatalError = null;
+        this._closing = null;
         this._protocolError = null;
-        this._outOfOrderPackets = [];
+        this.stream = { destroyed: null };
     }
 
-    // Built in via eventEmitter
-    // removeListener(listener, fn) {
-    //     // Do nothing
-    // }
+    on(eventName, fn) {
+        super.on(eventName, fn);
 
-    // Built in Via EventEmitter
-    // on(listener, fn) {
-    //     // Do nothing
-    // }
+        /**
+         * Since we are using DataAPI the connection is made by AWS
+         *  So when a new the eventName connect is sent we can just run the fn 
+         */
+        if(eventName === 'connect') {
+            fn();
+        }
+    }
 
-    // Built in via eventEmitter
-    // once(listener, fn) {
-    //     // Do nothing
-    // }
+    once(eventName, fn) {
+        super.once(eventName, fn);
+
+        /**
+         * Since we are using DataAPI the connection is made by AWS
+         *  So when a new the eventName connect is sent we can just emit connect 
+         */
+        if(eventName === 'connect') {
+            this.emit('connect');
+        }
+    }
 
     end(callback) {
         callback();
@@ -63,18 +75,25 @@ class Connection extends EventEmitter {
             options.sql = sql;
             options.values = values;
         }
-        
-        try {
-            let results = await client.query({
-                sql, 
-                parameters: values
-            })
-            cb(null, results);
-        }
-        catch(error) {
+
+        const { 
+            copySql, 
+            newParameters
+        } = this.transformValues(options.sql, options.values)
+
+        client.query({
+            sql: copySql,
+            parameters: newParameters
+        })
+        .then(results => {
+            cb(null, results.records);
+        })
+        .catch(error => {
             this.emit('error', error);
             cb(error);
-        }
+        })
+
+        return this;
     }
 
     execute(sql, values, cb) {
@@ -98,17 +117,37 @@ class Connection extends EventEmitter {
             options.values = values;
         }
 
-        try {
-            let results = await client.query({
-                sql, 
-                parameters: values
-            })
+        const { 
+            copySql, 
+            newParameters
+        } = this.transformValues(options.sql, options.values)
+
+        client.query({
+            sql: copySql,
+            parameters: newParameters
+        })
+        .then(results => {
             cb(null, results);
-        }
-        catch(error) {
+        })
+        .catch(error => {
             this.emit('error', error);
             cb(error);
-        }
+        })
+
+        return this;
+    }
+
+    transformValues(sql, parametersArray) {
+        if(!parametersArray) return { copySql: sql, newParameters: parametersArray}
+
+        let copySql = `${sql}`;
+        let newParameters = {};
+        parametersArray.forEach((param, index) => {
+            copySql = copySql.replace("?", `:value${index}`);
+            newParameters[`value${index}`] = param
+        })
+
+        return { copySql, newParameters };
     }
 }
 
