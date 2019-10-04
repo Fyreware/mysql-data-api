@@ -56,55 +56,7 @@ class Connection extends EventEmitter {
     }
 
     query(sql, values, cb) {
-        let options = {}
-        if (typeof sql === 'object') {
-            // query(options, cb)
-            options = sql;
-            if (typeof values === 'function') {
-                cb = values;
-            } else if (values !== undefined) {
-                options.values = values;
-            }
-        } else if (typeof values === 'function') {
-            // query(sql, cb)
-            cb = values;
-            options.sql = sql;
-            options.values = undefined;
-        } else {
-            // query(sql, values, cb)
-            options.sql = sql;
-            options.values = values;
-        }
-
-        const { 
-            copySql, 
-            newParameters
-        } = this.transformValues(options.sql, options.values)
-
-        // If query parameters are empty we want to just pass
-        //  the sql with no parameters
-        let query = { sql: copySql }
-        if(newParameters) query.parameters = newParameters;
-
-        client.query(query)
-        .then(results => {
-            // If result.records doesn't exist we want to just pass
-            //  results as an array, since sql expects an array in the cb
-            if(results.records) {
-                // Is select query
-                cb(null, results.records);
-            }
-            else {
-                // Is insert query
-                cb(null, results)
-            }
-        })
-        .catch(error => {
-            this.emit('error', error);
-            cb(error);
-        })
-
-        return this;
+        return execute(sql, values, cb);
     }
 
     execute(sql, values, cb) {
