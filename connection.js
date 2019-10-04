@@ -81,12 +81,23 @@ class Connection extends EventEmitter {
             newParameters
         } = this.transformValues(options.sql, options.values)
 
-        client.query({
-            sql: copySql,
-            parameters: newParameters
-        })
+        // If query parameters are empty we want to just pass
+        //  the sql with no parameters
+        let query = { sql: copySql }
+        if(newParameters) query.parameters = newParameters;
+
+        client.query(query)
         .then(results => {
-            cb(null, results.records);
+            // If result.records doesn't exist we want to just pass
+            //  results as an array, since sql expects an array in the cb
+            if(results.records) {
+                // Is select query
+                cb(null, results.records);
+            }
+            else {
+                // Is insert query
+                cb(null, results)
+            }
         })
         .catch(error => {
             this.emit('error', error);
@@ -122,12 +133,23 @@ class Connection extends EventEmitter {
             newParameters
         } = this.transformValues(options.sql, options.values)
 
-        client.query({
-            sql: copySql,
-            parameters: newParameters
-        })
+        // If query parameters are empty we want to just pass
+        //  the sql with no parameters
+        let query = { sql: copySql }
+        if(newParameters) query.parameters = newParameters;
+
+        client.query(query)
         .then(results => {
-            cb(null, results);
+            // If result.records doesn't exist we want to just pass
+            //  results as an array, since sql expects an array in the cb
+            if(results.records) {
+                // Is select query
+                cb(null, results.records);
+            }
+            else {
+                // Is insert query
+                cb(null, results)
+            }
         })
         .catch(error => {
             this.emit('error', error);
@@ -138,7 +160,9 @@ class Connection extends EventEmitter {
     }
 
     transformValues(sql, parametersArray) {
+        // console.log(sql, parametersArray);
         if(!parametersArray) return { copySql: sql, newParameters: parametersArray}
+        
 
         let copySql = `${sql}`;
         let newParameters = {};
