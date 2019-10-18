@@ -56,7 +56,7 @@ class Connection extends EventEmitter {
     }
 
     query(sql, values, cb) {
-        return execute(sql, values, cb);
+        return this.execute(sql, values, cb);
     }
 
     execute(sql, values, cb) {
