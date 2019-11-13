@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fyresite/mysql-data-api"
+    "url": "https://github.com/Fyreware/mysql-data-api"
   },
   "devDependencies": {
     "aws-sdk": "^2.540.0",
