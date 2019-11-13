@@ -8,7 +8,7 @@
     "fix": "eslint src/ --fix"
   },
   "keywords": [],
-  "author": "Fyresite",
+  "author": "Fyreware",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -19,7 +19,7 @@ npm i --save sequelize
 Install Wrapper
 
 ```
-npm install @fyresite/mysql-data-api --save
+npm install @fyreware/mysql-data-api --save
 ```
 ### Usage
 When using the data api wrapper you will configure sequelize like normal with the exception of of certain fields that are *ignored*, or have been *hijacked* by the wrapper as shown below.
@@ -40,7 +40,7 @@ const sequelize = new Sequelize(database, username, password, {
   dialect: 'mysql'
 
   // This tells sequelize to load our module instead of the `mysql2` module
-  dialectModulePath: '@fyresite/mysql-data-api',
+  dialectModulePath: '@fyreware/mysql-data-api',
 });
 ```
 
