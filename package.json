@@ -1,6 +1,6 @@
 {
   "name": "@fyreware/mysql-data-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -8,11 +8,11 @@
     "fix": "eslint src/ --fix"
   },
   "keywords": [],
-  "author": "Fyresite",
+  "author": "Fyreware",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fyresite/mysql-data-api"
+    "url": "https://github.com/Fyreware/mysql-data-api"
   },
   "devDependencies": {
     "aws-sdk": "^2.540.0",

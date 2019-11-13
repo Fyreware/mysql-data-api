@@ -1,4 +1,5 @@
 # Mysql Data API Wapper
+[![CircleCI](https://circleci.com/gh/Fyreware/mysql-data-api/tree/master.svg?style=svg)](https://circleci.com/gh/Fyreware/mysql-data-api/tree/master)
 
 This package was created to easily enabled the sequelize package to utilize the AWS data-api for **Aurora Serverless MySQL** by mocking parts of the interface of the [mysql2](https://github.com/brianmario/mysql2) package that is utilize in sequelize mysql dialect.
 
@@ -19,7 +20,7 @@ npm i --save sequelize
 Install Wrapper
 
 ```
-npm install @fyresite/mysql-data-api --save
+npm install @fyreware/mysql-data-api --save
 ```
 ### Usage
 When using the data api wrapper you will configure sequelize like normal with the exception of of certain fields that are *ignored*, or have been *hijacked* by the wrapper as shown below.
@@ -29,7 +30,7 @@ const database = 'testDb'
 // Arn of Aurora serverless cluster cluster
 const host = 'arn:aws:rds:us-east-1:123456789000:cluster:http-endpoint-test';
 
-// This param is ignores by the wrapper.
+// This param is ignored by the wrapper.
 const username = 'anything'; 
 
 // Arn of secrets manager secret containing the rds credentials
@@ -40,7 +41,7 @@ const sequelize = new Sequelize(database, username, password, {
   dialect: 'mysql'
 
   // This tells sequelize to load our module instead of the `mysql2` module
-  dialectModulePath: '@fyresite/mysql-data-api',
+  dialectModulePath: '@fyreware/mysql-data-api',
 });
 ```
 
