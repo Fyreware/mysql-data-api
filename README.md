@@ -1,5 +1,5 @@
 # Mysql Data API Wapper
-[![CircleCI](https://circleci.com/gh/Fyreware/mysql-data-api.svg?style=svg)](https://circleci.com/gh/Fyreware/mysql-data-api)
+[![CircleCI](https://circleci.com/gh/Fyreware/mysql-data-api/tree/master.svg?style=svg)](https://circleci.com/gh/Fyreware/mysql-data-api/tree/master)
 
 This package was created to easily enabled the sequelize package to utilize the AWS data-api for **Aurora Serverless MySQL** by mocking parts of the interface of the [mysql2](https://github.com/brianmario/mysql2) package that is utilize in sequelize mysql dialect.
 
