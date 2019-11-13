@@ -29,7 +29,7 @@ const database = 'testDb'
 // Arn of Aurora serverless cluster cluster
 const host = 'arn:aws:rds:us-east-1:123456789000:cluster:http-endpoint-test';
 
-// This param is ignores by the wrapper.
+// This param is ignored by the wrapper.
 const username = 'anything'; 
 
 // Arn of secrets manager secret containing the rds credentials
