@@ -4,7 +4,7 @@
 This package was created to easily enabled the sequelize package to utilize the AWS data-api for **Aurora Serverless MySQL** by mocking parts of the interface of the [mysql2](https://github.com/brianmario/mysql2) package that is utilize in sequelize mysql dialect.
 
 ## Getting Started
-This package has only been testes for sequelize v5, and only for the *mysql* dialect.
+This package has only been tested for sequelize v5, and only for the *mysql* dialect.
 
 ### Prerequisites
 When getting started make sure you are using **Aurora Serverless MySQL** and that the **Data API** is enabled.
@@ -46,24 +46,16 @@ const sequelize = new Sequelize(database, username, password, {
 ```
 
 ### Things to know
-* When using the **Data API** is that you will not be able to insert or select *zero date values* on the database ass both will result in error. This is a limitation of the **Data API** its self so not much can be done about it. We suggest ensuring these values are not zero values by either explicitly setting the date on insert or setting a default value of *NULL* or *CURRENT_TIMESTAMP*.
+* When using the **Data API** is that you will not be able to insert or select *zero date values* on the database as both will result in error. This is a limitation of the **Data API** its self so not much can be done about it. We suggest ensuring these values are not zero values by either explicitly setting the date on insert or setting a default value of *NULL* or *CURRENT_TIMESTAMP*.
 
 * Currently AWS credentials can only be passed in via the environment. So local development is only works when you use the **AWS Environment Variables** or have the default profile set in your **Shared Credentials File**
 
-## Running the tests
 
-Explain how to run the automated tests for this system
-
-
-### And coding style tests
+### Coding style tests
 
 ```
 npm test
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Contributing
 
