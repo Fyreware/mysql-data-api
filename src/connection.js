@@ -1,7 +1,7 @@
 const DataApi = require('data-api-client');
 const { EventEmitter } = require('events');
 
-let client;
+const clients = [];
 class Connection extends EventEmitter {
   constructor({
     host, // Resource
@@ -10,8 +10,10 @@ class Connection extends EventEmitter {
   }) {
     super();
 
-    if (!client) {
-      client = DataApi({
+    this.clientId = `${host}.${database}`;
+
+    if (!clients[this.clientId]) {
+      clients[this.clientId] = DataApi({
         resourceArn: host,
         secretArn: password,
         database,
@@ -91,7 +93,7 @@ class Connection extends EventEmitter {
     const query = { sql: copySql };
     if (newParameters) query.parameters = newParameters;
 
-    client.query(query)
+    clients[this.clientId].query(query)
       .then((results) => {
         // If result.records doesn't exist we want to just pass
         //  results as an array, since sql expects an array in the cb
