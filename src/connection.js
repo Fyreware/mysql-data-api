@@ -116,7 +116,7 @@ class Connection extends EventEmitter {
     if (!parametersArray) return { copySql: sql, newParameters: parametersArray };
 
 
-    let copySql = `${sql}`;
+    let copySql = sql;
     const newParameters = {};
     parametersArray.forEach((param, index) => {
       copySql = copySql.replace('?', `:value${index}`);
