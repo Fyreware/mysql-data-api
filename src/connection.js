@@ -7,6 +7,7 @@ class Connection extends EventEmitter {
     host, // Resource
     password, // SecretArn
     database, // Database
+    region,
   }) {
     super();
 
@@ -15,6 +16,9 @@ class Connection extends EventEmitter {
         resourceArn: host,
         secretArn: password,
         database,
+        options: {
+          region,
+        }
       });
     }
 
