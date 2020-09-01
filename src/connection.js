@@ -18,7 +18,7 @@ class Connection extends EventEmitter {
         database,
         options: {
           region,
-        }
+        },
       });
     }
 
