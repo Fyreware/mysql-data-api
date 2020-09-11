@@ -126,7 +126,7 @@ class Connection extends EventEmitter {
             cb(error);
           });
         break;
-      default: 
+      default:
         client.query(query)
           .then((results) => {
             // If result.records doesn't exist we want to just pass
