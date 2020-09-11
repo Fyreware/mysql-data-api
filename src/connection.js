@@ -90,23 +90,60 @@ class Connection extends EventEmitter {
     //  the sql with no parameters
     const query = { sql: copySql };
     if (newParameters) query.parameters = newParameters;
+    if (this.transactionId) query.transactionId = this.transactionId;
 
-    client.query(query)
-      .then((results) => {
-        // If result.records doesn't exist we want to just pass
-        //  results as an array, since sql expects an array in the cb
-        if (results.records) {
-          // Is select query
-          cb(null, results.records);
-        } else {
-          // Is insert query
-          cb(null, results);
-        }
-      })
-      .catch((error) => {
-        this.emit('error', error);
-        cb(error);
-      });
+    switch (query.sql) {
+      case 'START TRANSACTION;':
+        client.beginTransaction()
+          .then(({ transactionId }) => {
+            this.transactionId = transactionId;
+            cb();
+          })
+          .catch((error) => {
+            this.emit('error', error);
+            cb(error);
+          });
+        break;
+      case 'COMMIT;':
+        client.commitTransaction({ transactionId: this.transactionId })
+          .then(() => {
+            delete this.transactionId;
+            cb();
+          })
+          .catch((error) => {
+            this.emit('error', error);
+            cb(error);
+          });
+        break;
+      case 'ROLLBACK;':
+        client.rollbackTransaction({ transactionId: this.transactionId })
+          .then(() => {
+            delete this.transactionId;
+            cb();
+          })
+          .catch((error) => {
+            this.emit('error', error);
+            cb(error);
+          });
+        break;
+      default:
+        client.query(query)
+          .then((results) => {
+            // If result.records doesn't exist we want to just pass
+            //  results as an array, since sql expects an array in the cb
+            if (results.records) {
+              // Is select query
+              cb(null, results.records);
+            } else {
+              // Is insert query
+              cb(null, results);
+            }
+          })
+          .catch((error) => {
+            this.emit('error', error);
+            cb(error);
+          });
+    }
 
     return this;
   }
