@@ -7,8 +7,12 @@ This package was created to easily enabled the sequelize package to utilize the 
 This package has only been tested for sequelize v5, and only for the *mysql* dialect.
 
 ### Prerequisites
-When getting started make sure you are using **Aurora Serverless MySQL** and that the **Data API** is enabled.
-And that you cluster is configured to use secrets from **AWS Secrets Manager**
+
+Ensure you are using **Aurora Serverless MySQL** when getting started, and that the **Data API** is enabled, and your cluster is configured to use secrets from **AWS Secrets Manager**.
+
+Additionally, ensure that AWS SDK for Javascript **v2** is available at runtime, whether as a LambdaLayer or already accessible within the Lambda runtime, as it is required by the [data-api-client](https://github.com/jeremydaly/data-api-client/blob/main/index.js#L17) wrapper.
+
+
 
 Install sequelize in project
 ```
